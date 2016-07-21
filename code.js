@@ -12,6 +12,8 @@ console.log(myAccount.balance());
 myAccount.register(60.00, 'sold something');
 console.log(myAccount.balance());
 
-myAccount.lineItems.map(function(item) {
+var log = function(item) {
   console.log(item.toString());
-});
+};
+
+myAccount.lineItems.map(log);
