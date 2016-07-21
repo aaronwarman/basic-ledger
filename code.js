@@ -1,14 +1,20 @@
+var R = require('ramda');
+
 var Account = function(name, lineItems) {
+  this.id = R.identity();
   this.name = name;
-  this.lineItems = lineItems || [];
+  this.lineItems = [];
   return this;
 };
 
-Account.prototype.register = function(lineItem) {
-  var newLineItems = this.lineItems.reduce(function(acc, lineItem) {
-    return acc + lineItem;
-  }, []);
-  return new Account(this.name, newLineItems);
+Account.prototype.register = function(amount, label) {
+  this.lineItems.push({ amount: amount, label: label});
+};
+
+Account.prototype.balance = function() {
+  return this.lineItems.reduce(function(acc, item) {
+    return acc + parseFloat(item.amount);
+  }, 0.00);
 };
 
 var LineItem = function(amount, label) {
@@ -17,6 +23,13 @@ var LineItem = function(amount, label) {
 };
 
 var myAccount = new Account('Aaron');
-console.log(myAccount.lineItems.length);
-myAccount.lineItems.push(new LineItem(200.00, 'for food'));
-console.log(myAccount.lineItems.length);
+
+myAccount.register(1200.00, 'opening deposit');
+
+myAccount.register(-200.00, 'for food');
+
+myAccount.register(60.00, 'sold something');
+
+myAccount.lineItems.map(function(item) {
+  console.log("%s - '%s'", item.amount, item.label);
+});
