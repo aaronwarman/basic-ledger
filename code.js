@@ -1,7 +1,5 @@
-var R = require('ramda');
 
 var Account = function(name, lineItems) {
-  this.id = R.identity();
   this.name = name;
   this.lineItems = [];
   return this;
